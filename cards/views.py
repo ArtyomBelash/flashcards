@@ -17,6 +17,7 @@ class CardListView(generic.ListView):
 class CardCreateView(generic.CreateView):
     model = Card
     fields = ["question", "answer", "box"]
+    template_name = 'cards/create_card.html'
     success_url = reverse_lazy("card-create")
 
 

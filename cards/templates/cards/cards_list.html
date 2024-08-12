@@ -2,14 +2,14 @@
 {% load humanize %}
 {% block content %}
     <h2>
-        Карточки
+        Все карточки
     </h2>
-    <a href="{% url 'card-create' %}" role="button">
+    <a href="{% url 'card-create' %}" role="button" style="color: black;">
         ✨ Новая карточка
     </a>
     {% for card in cards %}
         {% ifchanged %}
-            <h3>🗃 {{ card.box | ordinal }} ящик</h3>
+            <h3>🗃️ {{ card.box | ordinal }} ящик</h3>
         {% endifchanged %}
         {% include "cards/card.html" %}
     {% endfor %}
