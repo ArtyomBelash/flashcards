@@ -1,6 +1,7 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
+    {% if user.is_authenticated %}
     <h2>
         Все карточки
     </h2>
@@ -13,4 +14,8 @@
         {% endifchanged %}
         {% include "cards/card.html" %}
     {% endfor %}
+    {% else %}
+        <a href="{% url 'login' %}" class="button">Войти</a>
+        <a href="{% url 'registration' %}" class="button">Регистрация</a>
+    {% endif %}
 {% endblock content %}

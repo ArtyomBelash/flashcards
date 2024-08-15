@@ -9,9 +9,13 @@ import random
 
 class CardListView(generic.ListView):
     model = Card
-    queryset = Card.objects.all().order_by("box", "-date_created")
     template_name = 'cards/cards_list.html'
     context_object_name = 'cards'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            queryset = Card.objects.filter(owner=self.request.user).order_by('box', '-date_created')
+            return queryset
 
 
 class CardCreateView(generic.CreateView):
@@ -19,6 +23,12 @@ class CardCreateView(generic.CreateView):
     fields = ["question", "answer", "box"]
     template_name = 'cards/create_card.html'
     success_url = reverse_lazy("card-create")
+
+    def form_valid(self, form):
+        card = form.save(commit=False)
+        card.owner = self.request.user
+        card.save()
+        return super().form_valid(form)
 
 
 class CardUpdateView(CardCreateView, generic.UpdateView):
@@ -28,9 +38,11 @@ class CardUpdateView(CardCreateView, generic.UpdateView):
 class BoxView(CardListView):
     template_name = "cards/box.html"
     form_class = CardCheckForm
+    context_object_name = 'boxes'
 
     def get_queryset(self):
-        return Card.objects.filter(box=self.kwargs["box_num"])
+        owner = self.request.user
+        return Card.objects.filter(box=self.kwargs["box_num"], owner=owner)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

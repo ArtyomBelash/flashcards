@@ -3,7 +3,7 @@
 
 {% block content %}
     <h2>🗃️ {{ box_number | ordinal }} Ящик</h2>
-    <mark>{{ object_list | length }}</mark> Карточеек{{ object_list | pluralize }} осталось в ящике.
+    <mark>{{ boxes | length }}</mark> Карточек{{ boxes | pluralize }} осталось в ящике.
     <hr>
     {% if check_card %}
         {% include "cards/card.html" with card=check_card %}
