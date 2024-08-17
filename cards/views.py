@@ -14,7 +14,7 @@ class CardListView(generic.ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            queryset = Card.objects.filter(owner=self.request.user).order_by('box', '-date_created')
+            queryset = Card.objects.get_cards_by_owner(user_id=self.request.user.id)
             return queryset
 
 
